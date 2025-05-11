@@ -10,6 +10,8 @@ public class FerreteriaDbContext : DbContext
     public DbSet<Item> Items { get; set; }
     public DbSet<Factura> Facturas { get; set; }
     public DbSet<FacturaDetalle> FacturaDetalles { get; set; }
+    public DbSet<User> Users => Set<User>();
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

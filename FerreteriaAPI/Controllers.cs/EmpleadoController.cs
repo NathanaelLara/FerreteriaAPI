@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FerreteriaAPI.Data;
 using FerreteriaAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FerreteriaAPI.Controllers
 {
@@ -10,16 +12,26 @@ namespace FerreteriaAPI.Controllers
     public class EmpleadoController : ControllerBase
     {
         private readonly FerreteriaDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public EmpleadoController(FerreteriaDbContext context)
+        public EmpleadoController(FerreteriaDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         // GET: api/empleado
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleados()
         {
+            var username = User.Identity?.Name;
+
+            if (username == null || !_cache.TryGetValue(username, out User _))
+            {
+                return Unauthorized("Sesión no activa en memoria.");
+            }
+
             return await _context.Empleados.ToListAsync();
         }
 

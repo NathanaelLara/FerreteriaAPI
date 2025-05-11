@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using FerreteriaAPI.Data;
 using FerreteriaAPI.Models;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using BCrypt.Net;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +13,36 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ferreteria API", Version = "v1" });
+
+    // JWT Configuration
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingresa el token aquí: Bearer {tu_token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 builder.Services.AddDbContext<FerreteriaDbContext>(options =>
     options.UseSqlServer("Server=localhost; Database=FerreteriaDB;User Id=Sa;Password=Sa123456;TrustServerCertificate=True"));
@@ -19,6 +52,26 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
+builder.Services.AddMemoryCache();
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+            )
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -31,9 +84,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllers(); // 🔥 Esto es lo que registra los endpoints de tus controladores
+app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -59,6 +114,16 @@ using (var scope = app.Services.CreateScope())
     }
 
     context.SaveChanges();
+
+   if (!context.Users.Any())
+    {
+        context.Users.Add(new User 
+        {
+        Username = "admin",
+        Password = BCrypt.Net.BCrypt.HashPassword("1234")
+        });
+    }
+        context.SaveChanges();
 }
 
 app.Run();

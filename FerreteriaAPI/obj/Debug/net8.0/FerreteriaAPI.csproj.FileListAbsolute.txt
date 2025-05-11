@@ -7,7 +7,9 @@ C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\FerreteriaAPI.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\FerreteriaAPI.pdb
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Azure.Core.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Azure.Identity.dll
+C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Humanizer.dll
+C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\bin\Debug\net8.0\Microsoft.Build.Locator.dll
@@ -153,6 +155,7 @@ C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\FerreteriaAPI.Assem
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\FerreteriaAPI.csproj.CoreCompileInputs.cache
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\FerreteriaAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\FerreteriaAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\FerreteriaAPI.sourcelink.json
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\staticwebassets.build.json
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\staticwebassets.development.json
 C:\Repositories\FerreteriaAPI\FerreteriaAPI\obj\Debug\net8.0\staticwebassets\msbuild.FerreteriaAPI.Microsoft.AspNetCore.StaticWebAssets.props
